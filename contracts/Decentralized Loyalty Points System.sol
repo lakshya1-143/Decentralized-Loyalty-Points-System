@@ -13,8 +13,10 @@ contract LoyaltyPoints {
     mapping(address => uint256) public pointsBalance;
 
     event MerchantRegistered(address indexed merchant, string name);
+    event MerchantDeactivated(address indexed merchant);
     event PointsIssued(address indexed merchant, address indexed customer, uint256 amount);
     event PointsRedeemed(address indexed customer, uint256 amount);
+    event PointsTransferred(address indexed from, address indexed to, uint256 amount);
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can perform this action");
@@ -35,6 +37,12 @@ contract LoyaltyPoints {
         emit MerchantRegistered(merchant, name);
     }
 
+    function deactivateMerchant(address merchant) external onlyAdmin {
+        require(merchants[merchant].isRegistered, "Merchant is not registered");
+        merchants[merchant].isRegistered = false;
+        emit MerchantDeactivated(merchant);
+    }
+
     function issuePoints(address customer, uint256 amount) external onlyMerchant {
         pointsBalance[customer] += amount;
         emit PointsIssued(msg.sender, customer, amount);
@@ -48,6 +56,14 @@ contract LoyaltyPoints {
 
     function getMyPoints() external view returns (uint256) {
         return pointsBalance[msg.sender];
+    }
+
+    function transferPoints(address to, uint256 amount) external {
+        require(pointsBalance[msg.sender] >= amount, "Not enough points to transfer");
+        require(to != address(0), "Invalid recipient address");
+        pointsBalance[msg.sender] -= amount;
+        pointsBalance[to] += amount;
+        emit PointsTransferred(msg.sender, to, amount);
     }
 }
 
