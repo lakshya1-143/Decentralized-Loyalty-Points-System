@@ -28,4 +28,5 @@ To modernize and unify customer rewards systems by leveraging the transparency a
 
 Contract Address: 0x29a58928f170c1b529570d45c02bcdce61ee6ceb
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/3860dd06-809e-4333-9e9f-b7e23946f9dd" />
-
+Reviewed by: Lakshya kumar
+Decentralized- Loyalty-Point System/31 Aug 2025
